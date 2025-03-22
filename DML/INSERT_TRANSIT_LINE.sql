@@ -1,0 +1,14 @@
+BEGIN
+    -- Delete existing data
+    DELETE FROM TRANSIT_LINE;
+
+    -- Insert 
+    INSERT INTO TRANSIT_LINE VALUES (1, 'Red Line', 25.00);
+    INSERT INTO TRANSIT_LINE VALUES (2, 'Green Line', 30.00);
+    INSERT INTO TRANSIT_LINE VALUES (3, 'Blue Line', 20.00);
+    INSERT INTO TRANSIT_LINE VALUES (4, 'Yellow Line', 35.00);
+    INSERT INTO TRANSIT_LINE VALUES (5, 'Purple Line', 40.00);
+
+    COMMIT;
+END;
+/
