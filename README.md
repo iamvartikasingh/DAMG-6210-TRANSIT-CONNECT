@@ -95,6 +95,9 @@ Run all `CREATE USER ... IDENTIFIED BY` commands with strong passwords:
 
 ### 7️⃣ Grant Roles to Users
 
+Run all GRANT statements as the user who created the tables (e.g., ADMIN) 
+and use the corresponding schema prefix (e.g., ADMIN.) to ensure access across schemas
+
 1. `GRANT CONNECT TO` each user
 2. Grant `SELECT`, `INSERT`, `UPDATE`, `DELETE` permissions based on user role:
    - **Transit Admin**: Full access to all tables and views
