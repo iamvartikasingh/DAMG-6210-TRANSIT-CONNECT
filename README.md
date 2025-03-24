@@ -1,4 +1,4 @@
-# 🚇 Transit System Database Setup — README
+# 🚇 Transit System Database
 
 ## 📌 Overview
 
