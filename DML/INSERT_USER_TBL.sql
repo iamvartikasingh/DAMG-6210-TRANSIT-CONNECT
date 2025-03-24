@@ -2,7 +2,6 @@ BEGIN
     -- Delete existing data
     DELETE FROM USER_TBL;
 
-DELETE FROM USER_TBL;
 
 -- USER
 INSERT INTO USER_TBL VALUES (1, 'Alice', 'pass123', 'alice@example.com', 'Customer', TO_DATE('2024-01-01', 'YYYY-MM-DD'), 1);
