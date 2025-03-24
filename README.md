@@ -1,8 +1,8 @@
-# 🚇 Transit Connect System Database
+# 🚇 Transit Connect Management System Database
 
 ## 📌 Overview
 
-This project sets up a fully functional Oracle-based **Transit Management System**. It includes:
+This project sets up a fully functional Oracle-based **Transit Connect Management System**. It includes:
 
 - Table definitions (DDL)
 - Sample data (DML)
