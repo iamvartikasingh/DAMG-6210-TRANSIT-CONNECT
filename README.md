@@ -62,11 +62,6 @@ Insert data **after all tables are created**. Execute these blocks in order:
 ### 4️⃣ Drop Application Users (Safe Rerun)
 
 Run all `DROP USER ... CASCADE` blocks to remove any existing users:
-- `transit_admin`
-- `customer_user`
-- `transaction_manager`
-- `booking_manager`
-- `subscription_manager`
 - `app_transit_admin`
 - `app_customer_user`
 - `app_txn_manager`

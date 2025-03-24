@@ -1,17 +1,3 @@
--- =============================
--- DROP USERS (Safe for rerun using PL/SQL blocks)
--- =============================
-BEGIN EXECUTE IMMEDIATE 'DROP USER transit_admin CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-BEGIN EXECUTE IMMEDIATE 'DROP USER customer_user CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-BEGIN EXECUTE IMMEDIATE 'DROP USER transaction_manager CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-BEGIN EXECUTE IMMEDIATE 'DROP USER booking_manager CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-BEGIN EXECUTE IMMEDIATE 'DROP USER subscription_manager CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-
 -- ================================================
 -- DROP USERS (safe rerun with PL/SQL + "/")
 -- ================================================
@@ -29,7 +15,7 @@ BEGIN EXECUTE IMMEDIATE 'DROP USER app_subs_mgr CASCADE'; EXCEPTION WHEN OTHERS 
 -- ================================================
 -- CREATE USERS with Strong Passwords
 -- ================================================
-CREATE USER app_transit_admin IDENTIFIED BY Admin#Pass1234;
+CREATE USER app_transit_admin IDENTIFIED BY AppAdmin#Pass1234;
 CREATE USER app_customer_user IDENTIFIED BY Cust#Pass1234;
 CREATE USER app_txn_manager IDENTIFIED BY Txn#Manager1234;
 CREATE USER app_booking_mgr IDENTIFIED BY Booking#1234Mgr;
