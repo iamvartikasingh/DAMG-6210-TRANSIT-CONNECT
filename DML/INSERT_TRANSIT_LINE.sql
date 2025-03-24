@@ -1,7 +1,7 @@
 BEGIN
     -- Delete existing data
     DELETE FROM TRANSIT_LINE;
-
+    COMMIT;
     -- Insert 
     INSERT INTO TRANSIT_LINE VALUES (1, 'Red Line', 25.00);
     INSERT INTO TRANSIT_LINE VALUES (2, 'Green Line', 30.00);
