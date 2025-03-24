@@ -1,8 +1,8 @@
-# 🚇 Transit Connect System Database
+# 🚇 Transit Connect Management System Database
 
 ## 📌 Overview
 
-This project sets up a fully functional Oracle-based **Transit Management System**. It includes:
+This project sets up a fully functional Oracle-based **Transit Connect Management System**. It includes:
 
 - Table definitions (DDL)
 - Sample data (DML)
@@ -59,7 +59,19 @@ Insert data **after all tables are created**. Execute these blocks in order:
 
 ---
 
-### 4️⃣ Drop Application Users (Safe Rerun)
+### 4️⃣ Create Views
+
+Run these `CREATE OR REPLACE VIEW` statements in order:
+
+1. `TICKET_USAGE_SUMMARY`
+2. `USER_TRANSACTION_HISTORY`
+3. `WEEKLY_BOOKING_TRENDS`
+4. `CURRENT_INVENTORY_STATUS`
+5. `TOTAL_SALES_BY_LINE`
+
+
+
+### 5️⃣ Drop Application Users (Safe Rerun)
 
 Run all `DROP USER ... CASCADE` blocks to remove any existing users:
 - `app_transit_admin`
@@ -70,7 +82,7 @@ Run all `DROP USER ... CASCADE` blocks to remove any existing users:
 
 ---
 
-### 5️⃣ Create Application Users
+### 6️⃣ Create Application Users
 
 Run all `CREATE USER ... IDENTIFIED BY` commands with strong passwords:
 - `app_transit_admin`
@@ -81,7 +93,7 @@ Run all `CREATE USER ... IDENTIFIED BY` commands with strong passwords:
 
 ---
 
-### 6️⃣ Grant Roles to Users
+### 7️⃣ Grant Roles to Users
 
 1. `GRANT CONNECT TO` each user
 2. Grant `SELECT`, `INSERT`, `UPDATE`, `DELETE` permissions based on user role:
@@ -93,17 +105,7 @@ Run all `CREATE USER ... IDENTIFIED BY` commands with strong passwords:
 
 ---
 
-### 7️⃣ Create Views
 
-Run these `CREATE OR REPLACE VIEW` statements in order:
-
-1. `TICKET_USAGE_SUMMARY`
-2. `USER_TRANSACTION_HISTORY`
-3. `WEEKLY_BOOKING_TRENDS`
-4. `CURRENT_INVENTORY_STATUS`
-5. `TOTAL_SALES_BY_LINE`
-
----
 
 ## ✅ Validation Checklist
 
