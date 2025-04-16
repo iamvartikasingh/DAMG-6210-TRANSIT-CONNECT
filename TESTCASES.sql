@@ -46,44 +46,42 @@ END;
 --Purchase Subscriiption
 
 
--- Valid
+-- Invalid name (Monthly1)
 BEGIN
-  purchase_subscription(2, 'Monthly1 Pass', SYSDATE);
-END;
-/
--- Valid
-BEGIN
-  purchase_subscription(200, 'Monthly Pass', SYSDATE);
+  ADMIN.purchase_subscription(2, 'Monthly1 Pass', SYSDATE);
 END;
 /
 
--- Past date (should trigger error now)
+-- Valid
 BEGIN
-  purchase_subscription(3, 'Monthly Pass', SYSDATE - 1);
+  ADMIN.purchase_subscription(1017, 'Monthly Pass', SYSDATE);
 END;
 /
 
+-- Past Date
+BEGIN
+  ADMIN.purchase_subscription(3, 'Monthly Pass', SYSDATE - 1);
+END;
+/
 
 -- Ticket Booking and Cancellation
 
 
--- Valid Bookings
-BEGIN TICKET_BOOKING_PKG.book_ticket(1, 1, SYSDATE, 1); END;
-BEGIN TICKET_BOOKING_PKG.book_ticket(4, 2, SYSDATE, 2); END;
-BEGIN TICKET_BOOKING_PKG.book_ticket(4, 3, SYSDATE, 5); END;
+-- Valid bookings
+Set serveroutput on;
+BEGIN ADMIN.TICKET_BOOKING_PKG.book_ticket(1, 1, SYSDATE, 1); END;
+BEGIN ADMIN.TICKET_BOOKING_PKG.book_ticket(4, 2, SYSDATE, 2); END;
+BEGIN ADMIN.TICKET_BOOKING_PKG.book_ticket(4, 3, SYSDATE, 5); END;
+BEGIN ADMIN.TICKET_BOOKING_PKG.book_ticket(3, 1, SYSDATE, 1); END;
+BEGIN ADMIN.TICKET_BOOKING_PKG.book_ticket(3, 2, SYSDATE, 2); END;
+BEGIN ADMIN.TICKET_BOOKING_PKG.book_ticket(4, 3, SYSDATE, 1); END;
+BEGIN ADMIN.TICKET_BOOKING_PKG.book_ticket(5, 4, SYSDATE, 6); END;
+BEGIN ADMIN.TICKET_BOOKING_PKG.book_ticket(2, 1, SYSDATE, 1); END;
 
-BEGIN TICKET_BOOKING_PKG.book_ticket(3, 1, SYSDATE, 1); END;
-BEGIN TICKET_BOOKING_PKG.book_ticket(3, 2, SYSDATE, 2); END;
-
-BEGIN TICKET_BOOKING_PKG.book_ticket(4, 3, SYSDATE, 1); END;
-BEGIN TICKET_BOOKING_PKG.book_ticket(5, 4, SYSDATE, 6); END;
-
-BEGIN TICKET_BOOKING_PKG.book_ticket(2, 1, SYSDATE, 1); END;
-
--- Edge Cases
-BEGIN TICKET_BOOKING_PKG.book_ticket(1, 1, TO_DATE('2023-01-01', 'YYYY-MM-DD'), 1); END;
-BEGIN TICKET_BOOKING_PKG.book_ticket(1, 1, SYSDATE, 9); END;
-BEGIN TICKET_BOOKING_PKG.book_ticket(1, 2, SYSDATE, 4); END;
+-- Edge cases
+BEGIN ADMIN.TICKET_BOOKING_PKG.book_ticket(1, 1, TO_DATE('2023-01-01', 'YYYY-MM-DD'), 1); END;
+BEGIN ADMIN.TICKET_BOOKING_PKG.book_ticket(1, 1, SYSDATE, 9); END;
+BEGIN ADMIN.TICKET_BOOKING_PKG.book_ticket(1, 2, SYSDATE, 4); END;
 
 
 -- ✅ Ticket cancellation
@@ -91,9 +89,10 @@ SELECT TICKET_ID FROM TICKET WHERE TICKET_STATUS = 'Unused' ORDER BY PURCHASE_TI
 -- Cancellation
 -- (Run a query to find recent ticket IDs and plug them in)
 -- Example:
-BEGIN TICKET_BOOKING_PKG.cancel_ticket(1135); END;
-BEGIN TICKET_BOOKING_PKG.cancel_ticket(1133); END;
-BEGIN TICKET_BOOKING_PKG.cancel_ticket(1115); END;
+-- Replace ticket IDs with actual ones after running bookings
+BEGIN ADMIN.TICKET_BOOKING_PKG.cancel_ticket(1135); END;
+BEGIN ADMIN.TICKET_BOOKING_PKG.cancel_ticket(1133); END;
+BEGIN ADMIN.TICKET_BOOKING_PKG.cancel_ticket(1115); END;
 
 
 
