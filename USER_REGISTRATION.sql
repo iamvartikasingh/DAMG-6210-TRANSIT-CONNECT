@@ -229,3 +229,18 @@ BEGIN
 END;
 /
 
+---Grants
+GRANT EXECUTE ON ADMIN.GET_USER_DISCOUNT TO app_transit_admin;
+GRANT EXECUTE ON ADMIN.USER_REGISTRATION_PKG TO app_transit_admin;
+
+-- Customer User: needs read-only logic (e.g., discount or validation)
+GRANT EXECUTE ON ADMIN.GET_USER_DISCOUNT TO app_customer_user;
+
+-- Transaction Manager: may need validation or user discounts in txn flow
+GRANT EXECUTE ON ADMIN.GET_USER_DISCOUNT TO app_txn_manager;
+
+-- Booking Manager: read-only discount access
+GRANT EXECUTE ON ADMIN.GET_USER_DISCOUNT TO app_booking_mgr;
+
+-- Subscription Manager: may use discounts for pricing
+GRANT EXECUTE ON ADMIN.GET_USER_DISCOUNT TO app_subs_mgr;
