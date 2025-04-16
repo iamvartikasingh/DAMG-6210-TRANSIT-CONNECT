@@ -67,10 +67,10 @@ END;
 -- Ticket Booking and Cancellation
 
 
--- ✅ Bookings with multiple tickets
+-- Valid Bookings
 BEGIN TICKET_BOOKING_PKG.book_ticket(1, 1, SYSDATE, 1); END;
-BEGIN TICKET_BOOKING_PKG.book_ticket(1, 2, SYSDATE, 3); END;
-BEGIN TICKET_BOOKING_PKG.book_ticket(1, 3, SYSDATE, 5); END;
+BEGIN TICKET_BOOKING_PKG.book_ticket(4, 2, SYSDATE, 2); END;
+BEGIN TICKET_BOOKING_PKG.book_ticket(4, 3, SYSDATE, 5); END;
 
 BEGIN TICKET_BOOKING_PKG.book_ticket(3, 1, SYSDATE, 1); END;
 BEGIN TICKET_BOOKING_PKG.book_ticket(3, 2, SYSDATE, 2); END;
@@ -80,18 +80,20 @@ BEGIN TICKET_BOOKING_PKG.book_ticket(5, 4, SYSDATE, 6); END;
 
 BEGIN TICKET_BOOKING_PKG.book_ticket(2, 1, SYSDATE, 1); END;
 
--- ❌ Edge cases
+-- Edge Cases
 BEGIN TICKET_BOOKING_PKG.book_ticket(1, 1, TO_DATE('2023-01-01', 'YYYY-MM-DD'), 1); END;
 BEGIN TICKET_BOOKING_PKG.book_ticket(1, 1, SYSDATE, 9); END;
 BEGIN TICKET_BOOKING_PKG.book_ticket(1, 2, SYSDATE, 4); END;
 
+
 -- ✅ Ticket cancellation
 SELECT TICKET_ID FROM TICKET WHERE TICKET_STATUS = 'Unused' ORDER BY PURCHASE_TIME DESC FETCH FIRST 1 ROWS ONLY;
-
+-- Cancellation
+-- (Run a query to find recent ticket IDs and plug them in)
+-- Example:
 BEGIN TICKET_BOOKING_PKG.cancel_ticket(1135); END;
-
 BEGIN TICKET_BOOKING_PKG.cancel_ticket(1133); END;
-
--- Try cancelling again
 BEGIN TICKET_BOOKING_PKG.cancel_ticket(1115); END;
+
+
 
