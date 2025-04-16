@@ -1,0 +1,280 @@
+SET SERVEROUTPUT ON;
+
+
+--Discount type sequences
+---Sequences
+DECLARE
+    seq_count NUMBER;
+BEGIN
+    SELECT COUNT(*)
+    INTO seq_count
+    FROM ALL_SEQUENCES
+    WHERE SEQUENCE_NAME = 'DISCOUNT_TYPE_SEQ_PK'
+      AND SEQUENCE_OWNER = USER;
+
+    IF seq_count > 0 THEN
+        EXECUTE IMMEDIATE 'DROP SEQUENCE DISCOUNT_TYPE_SEQ_PK';
+        DBMS_OUTPUT.PUT_LINE('Sequence "DISCOUNT_TYPE_SEQ_PK" dropped successfully.');
+    END IF;
+
+    EXECUTE IMMEDIATE 'CREATE SEQUENCE DISCOUNT_TYPE_SEQ_PK START WITH 6 INCREMENT BY 1 NOCACHE NOCYCLE';
+    DBMS_OUTPUT.PUT_LINE('Sequence "DISCOUNT_TYPE_SEQ_PK" created successfully.');
+END;
+/
+commit;
+
+--Transit Line sequence
+
+DECLARE
+    seq_count NUMBER;
+BEGIN
+    SELECT COUNT(*)
+    INTO seq_count
+    FROM ALL_SEQUENCES
+    WHERE SEQUENCE_NAME = 'TRANSIT_LINE_SEQ_PK'
+      AND SEQUENCE_OWNER = USER;
+
+    IF seq_count > 0 THEN
+        EXECUTE IMMEDIATE 'DROP SEQUENCE TRANSIT_LINE_SEQ_PK';
+        DBMS_OUTPUT.PUT_LINE('Sequence "TRANSIT_LINE_SEQ_PK" dropped successfully.');
+    END IF;
+
+    EXECUTE IMMEDIATE 'CREATE SEQUENCE TRANSIT_LINE_SEQ_PK START WITH 6 INCREMENT BY 1 NOCACHE NOCYCLE';
+    DBMS_OUTPUT.PUT_LINE('Sequence "TRANSIT_LINE_SEQ_PK" created successfully.');
+END;
+/
+
+
+--
+--------------------------------------------------------
+--  Sequence BOOKING_SEQ
+--------------------------------------------------------
+DECLARE
+    seq_count NUMBER;
+BEGIN
+    SELECT COUNT(*)
+    INTO seq_count
+    FROM ALL_SEQUENCES
+    WHERE SEQUENCE_NAME = 'BOOKING_SEQ'
+      AND SEQUENCE_OWNER = USER;
+
+    IF seq_count > 0 THEN
+        EXECUTE IMMEDIATE 'DROP SEQUENCE BOOKING_SEQ';
+        DBMS_OUTPUT.PUT_LINE('Sequence "BOOKING_SEQ" dropped successfully.');
+    END IF;
+
+    EXECUTE IMMEDIATE '
+        CREATE SEQUENCE BOOKING_SEQ
+        MINVALUE 1
+        MAXVALUE 9999999999999999999999999999
+        INCREMENT BY 1
+        START WITH 1118
+        NOCACHE
+        NOORDER
+        NOCYCLE
+        NOKEEP
+        NOSCALE
+        GLOBAL';
+        
+    DBMS_OUTPUT.PUT_LINE('Sequence "BOOKING_SEQ" created successfully.');
+END;
+/
+
+
+
+--Sequence DISCOUNT_TYPE_SEQ_PK
+DECLARE
+    seq_count NUMBER;
+BEGIN
+    SELECT COUNT(*)
+    INTO seq_count
+    FROM ALL_SEQUENCES
+    WHERE SEQUENCE_NAME = 'DISCOUNT_TYPE_SEQ_PK'
+      AND SEQUENCE_OWNER = USER;
+
+    IF seq_count > 0 THEN
+        EXECUTE IMMEDIATE 'DROP SEQUENCE DISCOUNT_TYPE_SEQ_PK';
+        DBMS_OUTPUT.PUT_LINE('Sequence "DISCOUNT_TYPE_SEQ_PK" dropped successfully.');
+    END IF;
+
+    EXECUTE IMMEDIATE '
+        CREATE SEQUENCE DISCOUNT_TYPE_SEQ_PK
+        MINVALUE 1
+        MAXVALUE 9999999999999999999999999999
+        INCREMENT BY 1
+        START WITH 6
+        NOCACHE
+        NOORDER
+        NOCYCLE
+        NOKEEP
+        NOSCALE
+        GLOBAL';
+
+    DBMS_OUTPUT.PUT_LINE('Sequence "DISCOUNT_TYPE_SEQ_PK" created successfully.');
+END;
+/
+
+--Subscription_SEQ_PK
+DECLARE
+    seq_count NUMBER;
+BEGIN
+    SELECT COUNT(*)
+    INTO seq_count
+    FROM ALL_SEQUENCES
+    WHERE SEQUENCE_NAME = 'SUBSCRIPTION_SEQ_PK'
+      AND SEQUENCE_OWNER = USER;
+
+    IF seq_count > 0 THEN
+        EXECUTE IMMEDIATE 'DROP SEQUENCE SUBSCRIPTION_SEQ_PK';
+        DBMS_OUTPUT.PUT_LINE('Sequence "SUBSCRIPTION_SEQ_PK" dropped successfully.');
+    END IF;
+
+    EXECUTE IMMEDIATE '
+        CREATE SEQUENCE SUBSCRIPTION_SEQ_PK
+        MINVALUE 1
+        MAXVALUE 9999999999999999999999999999
+        INCREMENT BY 1
+        START WITH 15
+        NOCACHE
+        NOORDER
+        NOCYCLE
+        NOKEEP
+        NOSCALE
+        GLOBAL';
+
+    DBMS_OUTPUT.PUT_LINE('Sequence "SUBSCRIPTION_SEQ_PK" created successfully.');
+END;
+/
+
+
+--Subscription_type_SEQ_PK
+DECLARE
+    seq_count NUMBER;
+BEGIN
+    SELECT COUNT(*)
+    INTO seq_count
+    FROM ALL_SEQUENCES
+    WHERE SEQUENCE_NAME = 'SUBSCRIPTION_TYPE_SEQ_PK'
+      AND SEQUENCE_OWNER = USER;
+
+    IF seq_count > 0 THEN
+        EXECUTE IMMEDIATE 'DROP SEQUENCE SUBSCRIPTION_TYPE_SEQ_PK';
+        DBMS_OUTPUT.PUT_LINE('Sequence "SUBSCRIPTION_TYPE_SEQ_PK" dropped successfully.');
+    END IF;
+
+    EXECUTE IMMEDIATE '
+        CREATE SEQUENCE SUBSCRIPTION_TYPE_SEQ_PK
+        MINVALUE 1
+        MAXVALUE 9999999999999999999999999999
+        INCREMENT BY 1
+        START WITH 6
+        NOCACHE
+        NOORDER
+        NOCYCLE
+        NOKEEP
+        NOSCALE
+        GLOBAL';
+
+    DBMS_OUTPUT.PUT_LINE('Sequence "SUBSCRIPTION_TYPE_SEQ_PK" created successfully.');
+END;
+/
+
+--Ticket_SEQ_PK
+DECLARE
+    seq_count NUMBER;
+BEGIN
+    SELECT COUNT(*)
+    INTO seq_count
+    FROM ALL_SEQUENCES
+    WHERE SEQUENCE_NAME = 'TICKET_SEQ_PK'
+      AND SEQUENCE_OWNER = USER;
+
+    IF seq_count > 0 THEN
+        EXECUTE IMMEDIATE 'DROP SEQUENCE TICKET_SEQ_PK';
+        DBMS_OUTPUT.PUT_LINE('Sequence "TICKET_SEQ_PK" dropped successfully.');
+    END IF;
+
+    EXECUTE IMMEDIATE '
+        CREATE SEQUENCE TICKET_SEQ_PK
+        MINVALUE 1
+        MAXVALUE 9999999999999999999999999999
+        INCREMENT BY 1
+        START WITH 1211
+        NOCACHE
+        NOORDER
+        NOCYCLE
+        NOKEEP
+        NOSCALE
+        GLOBAL';
+
+    DBMS_OUTPUT.PUT_LINE('Sequence "TICKET_SEQ_PK" created successfully.');
+END;
+/
+
+
+--Transaction_SEQ_PK
+
+DECLARE
+    seq_count NUMBER;
+BEGIN
+    SELECT COUNT(*)
+    INTO seq_count
+    FROM ALL_SEQUENCES
+    WHERE SEQUENCE_NAME = 'TRANSACTION_SEQ'
+      AND SEQUENCE_OWNER = USER;
+
+    IF seq_count > 0 THEN
+        EXECUTE IMMEDIATE 'DROP SEQUENCE TRANSACTION_SEQ';
+        DBMS_OUTPUT.PUT_LINE('Sequence "TRANSACTION_SEQ" dropped successfully.');
+    END IF;
+
+    EXECUTE IMMEDIATE '
+        CREATE SEQUENCE TRANSACTION_SEQ
+        MINVALUE 1
+        MAXVALUE 9999999999999999999999999999
+        INCREMENT BY 1
+        START WITH 1192
+        NOCACHE
+        NOORDER
+        NOCYCLE
+        NOKEEP
+        NOSCALE
+        GLOBAL';
+
+    DBMS_OUTPUT.PUT_LINE('Sequence "TRANSACTION_SEQ" created successfully.');
+END;
+/
+
+
+--user_seq_PK
+DECLARE
+    seq_count NUMBER;
+BEGIN
+    SELECT COUNT(*)
+    INTO seq_count
+    FROM ALL_SEQUENCES
+    WHERE SEQUENCE_NAME = 'USER_SEQ_PK'
+      AND SEQUENCE_OWNER = USER;
+
+    IF seq_count > 0 THEN
+        EXECUTE IMMEDIATE 'DROP SEQUENCE USER_SEQ_PK';
+        DBMS_OUTPUT.PUT_LINE('Sequence "USER_SEQ_PK" dropped successfully.');
+    END IF;
+
+    EXECUTE IMMEDIATE '
+        CREATE SEQUENCE USER_SEQ_PK
+        MINVALUE 1
+        MAXVALUE 9999999999999999999999999999
+        INCREMENT BY 1
+        START WITH 1018
+        NOCACHE
+        NOORDER
+        NOCYCLE
+        NOKEEP
+        NOSCALE
+        GLOBAL';
+
+    DBMS_OUTPUT.PUT_LINE('Sequence "USER_SEQ_PK" created successfully.');
+END;
+/
+
