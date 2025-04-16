@@ -132,17 +132,11 @@ CREATE OR REPLACE PACKAGE BODY USER_REGISTRATION_PKG AS
     END IF;
 
     -- Step 6: If user type is provided, validate & fetch discount
-    IF p_user_type IS NOT NULL THEN
-      v_discount_id := get_user_discount(p_user_type);
-
-      IF v_discount_id IS NULL THEN
-        DBMS_OUTPUT.PUT_LINE(
-          '❌ Error: Invalid user type "' || p_user_type ||
-          '". No matching discount found.'
-        );
-        RETURN;
-      END IF;
-    END IF;
+   -- Step 6: Validate that user type is not NULL and fetch discount
+IF p_user_type IS NULL THEN
+  DBMS_OUTPUT.PUT_LINE('❌ Error: User type cannot be null. Please enter a valid Discount Type.');
+  RETURN;
+END IF;
 
     -- Step 7: Generate user ID
     v_user_id := USER_SEQ_PK.NEXTVAL;
