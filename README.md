@@ -1,4 +1,5 @@
-# 🚇 Transit Connect Management System Database
+
+# 🚇 Transit Connect System Database
 
 ## 📌 Overview
 
@@ -34,8 +35,8 @@ Run these `CREATE TABLE` statements in the following order:
 
 1. `DISCOUNT_TYPE`
 2. `TRANSIT_LINE`
-3. `USER_TBL`
-4. `SUBSCRIPTION_TYPE`
+3. `SUBSCRIPTION_TYPE`
+4. `USER_TBL`
 5. `BOOKING`
 6. `SUBSCRIPTION`
 7. `TICKET`
@@ -49,11 +50,12 @@ Insert data **after all tables are created**. Execute these blocks in order:
 
 1. Insert into `DISCOUNT_TYPE`
 2. Insert into `TRANSIT_LINE`
-3. Insert into `USER_TBL`
-4. Insert into `BOOKING`
-5. Insert into `SUBSCRIPTION`
-6. Insert into `TICKET`
-7. Insert into `TRANSACTION`
+3. Insert into `SUBSCRIPTION_TYPE`
+4. Insert into `USER_TBL`
+5. Insert into `BOOKING`
+6. Insert into `SUBSCRIPTION`
+7. Insert into `TICKET`
+8. Insert into `TRANSACTION`
 
 > Each data insertion is wrapped in a PL/SQL block with `DELETE` and `INSERT` followed by `COMMIT`.
 
@@ -94,6 +96,9 @@ Run all `CREATE USER ... IDENTIFIED BY` commands with strong passwords:
 ---
 
 ### 7️⃣ Grant Roles to Users
+
+Run all GRANT statements as the user who created the tables (e.g., ADMIN) 
+and use the corresponding schema prefix (e.g., ADMIN.) to ensure access across schemas
 
 1. `GRANT CONNECT TO` each user
 2. Grant `SELECT`, `INSERT`, `UPDATE`, `DELETE` permissions based on user role:
