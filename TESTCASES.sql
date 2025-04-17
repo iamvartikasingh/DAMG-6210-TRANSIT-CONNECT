@@ -11,7 +11,7 @@ BEGIN
     p_user_name     => 'abcd',
     p_email         => 'test123@example.com',
     p_password      => null,
-    p_user_type     => 'Student Discount'
+    p_user_type     => 'Student'
   );
 END;
 /
@@ -22,7 +22,7 @@ BEGIN
     p_user_name     => 'Invalid Discount User',
     p_email         => null,
     p_password      => 'Test456!',
-    p_user_type     => 'Teacher Discount'
+    p_user_type     => 'Senior'
   );
 END;
 /
@@ -67,6 +67,8 @@ SET SERVEROUTPUT ON;
 
 SELECT * FROM app_transit_admin.user_tbl;
 -- ✅ TC7–13: Valid Bookings
+
+-- 1028 for the $1000 case
 BEGIN APP_TRANSIT_ADMIN.TICKET_BOOKING_PKG.book_ticket(1, 1, SYSDATE, 1); END;
 BEGIN APP_TRANSIT_ADMIN.TICKET_BOOKING_PKG.book_ticket(4, 2, SYSDATE, 2); END;
 BEGIN APP_TRANSIT_ADMIN.TICKET_BOOKING_PKG.book_ticket(4, 3, SYSDATE, 5); END;
