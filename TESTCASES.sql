@@ -41,7 +41,7 @@ END;
 -- ================================
 -- 🧪 PURCHASE SUBSCRIPTION TESTS
 -- ================================
-
+SET SERVEROUTPUT ON;
 -- ❌ TC4: Invalid Subscription Name
 BEGIN
   APP_TRANSIT_ADMIN.purchase_subscription(2, 'Monthly1 Pass', SYSDATE);
@@ -63,7 +63,9 @@ END;
 -- ================================
 -- 🧪 TICKET BOOKING TESTS
 -- ================================
+SET SERVEROUTPUT ON;
 
+SELECT * FROM app_transit_admin.user_tbl;
 -- ✅ TC7–13: Valid Bookings
 BEGIN APP_TRANSIT_ADMIN.TICKET_BOOKING_PKG.book_ticket(1, 1, SYSDATE, 1); END;
 BEGIN APP_TRANSIT_ADMIN.TICKET_BOOKING_PKG.book_ticket(4, 2, SYSDATE, 2); END;
@@ -86,15 +88,16 @@ BEGIN APP_TRANSIT_ADMIN.TICKET_BOOKING_PKG.book_ticket(1, 2, SYSDATE, 4); END;
 -- ================================
 -- 🧪 TICKET CANCELLATION TESTS
 -- ================================
-
+SET SERVEROUTPUT ON;
 -- ⚠️ First run this to get an unused TICKET_ID:
 SELECT TICKET_ID 
-FROM TICKET 
+FROM app_transit_admin.TICKET 
 WHERE TICKET_STATUS = 'Unused' 
 ORDER BY PURCHASE_TIME DESC 
 FETCH FIRST 1 ROWS ONLY;
 
 -- 🔁 Replace these ticket IDs with real values as needed:
-BEGIN APP_TRANSIT_ADMIN.TICKET_BOOKING_PKG.cancel_ticket(1135); END;
+BEGIN APP_TRANSIT_ADMIN.TICKET_BOOKING_PKG.cancel_ticket(1296); END;
 BEGIN APP_TRANSIT_ADMIN.TICKET_BOOKING_PKG.cancel_ticket(1133); END;
 BEGIN APP_TRANSIT_ADMIN.TICKET_BOOKING_PKG.cancel_ticket(1115); END;
+
