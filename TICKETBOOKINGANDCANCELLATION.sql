@@ -1,3 +1,4 @@
+-- PACKAGE SPEC
 CREATE OR REPLACE PACKAGE TICKET_BOOKING_PKG AS
   FUNCTION is_valid_user(p_user_id IN NUMBER) RETURN BOOLEAN;
 
@@ -12,7 +13,7 @@ CREATE OR REPLACE PACKAGE TICKET_BOOKING_PKG AS
 END TICKET_BOOKING_PKG;
 /
 
-
+-- PACKAGE BODY
 CREATE OR REPLACE PACKAGE BODY TICKET_BOOKING_PKG AS
 
   FUNCTION is_valid_user(p_user_id IN NUMBER) RETURN BOOLEAN IS
@@ -31,12 +32,12 @@ CREATE OR REPLACE PACKAGE BODY TICKET_BOOKING_PKG AS
     p_num_passengers  IN NUMBER
   ) IS
     v_user_type           USER_TBL.USER_TYPE%TYPE;
-    v_discount_id         DISCOUNT_TYPE.DISCOUNT_TYPE_ID%TYPE := 2;
-    v_discount_percentage DISCOUNT_TYPE.DISCOUNT_PERCENTAGE%TYPE := 0;
-    v_discount_name       DISCOUNT_TYPE.DISCOUNT_NAME%TYPE;
+    v_discount_id         DISCOUNT_TYPE.DISCOUNT_TYPE_ID%TYPE := NULL;
+    v_discount_percentage NUMBER := 0;
+    v_discount_name       VARCHAR2(50) := 'No Discount';
     v_transit_amount      TRANSIT_LINE.AMOUNT%TYPE;
-    v_total_amount        NUMBER(5,2);
-    v_final_amount        NUMBER(5,2);
+    v_total_amount        NUMBER(10,2);
+    v_final_amount        NUMBER(10,2);
     v_booking_id          NUMBER;
     v_ticket_id           NUMBER;
     v_transaction_id      NUMBER;
@@ -64,39 +65,38 @@ CREATE OR REPLACE PACKAGE BODY TICKET_BOOKING_PKG AS
       RETURN;
     END IF;
 
-    SELECT USER_TYPE INTO v_user_type
+    SELECT LOWER(USER_TYPE) INTO v_user_type
     FROM USER_TBL
     WHERE USER_ID = p_user_id;
 
-    -- Updated Discount logic
-    IF UPPER(v_user_type) = 'STUDENT' THEN
-      IF p_num_passengers = 1 THEN
-        v_discount_id := 1;
-      ELSIF p_num_passengers BETWEEN 2 AND 4 THEN
-        v_discount_id := 4;
-      ELSIF p_num_passengers BETWEEN 5 AND 8 THEN
-        v_discount_id := 5;
-      END IF;
-    ELSIF UPPER(v_user_type) = 'SENIOR' THEN
-      IF p_num_passengers = 1 THEN
-        v_discount_id := 3;
-      ELSIF p_num_passengers BETWEEN 2 AND 4 THEN
-        v_discount_id := 4;
-      ELSIF p_num_passengers BETWEEN 5 AND 8 THEN
-        v_discount_id := 5;
-      END IF;
-    ELSIF UPPER(v_user_type) = 'CUSTOMER' THEN
-      IF p_num_passengers BETWEEN 2 AND 4 THEN
-        v_discount_id := 4;
-      ELSIF p_num_passengers BETWEEN 5 AND 8 THEN
-        v_discount_id := 5;
-      END IF;
-    END IF;
+    -- ✅ Discount Logic (dynamic lookup)
+    IF v_user_type = 'student' AND p_num_passengers = 1 THEN
+      SELECT DISCOUNT_TYPE_ID, DISCOUNT_PERCENTAGE, DISCOUNT_NAME
+      INTO v_discount_id, v_discount_percentage, v_discount_name
+      FROM DISCOUNT_TYPE
+      WHERE LOWER(DISCOUNT_NAME) = 'student discount';
 
-    SELECT DISCOUNT_NAME, DISCOUNT_PERCENTAGE
-    INTO v_discount_name, v_discount_percentage
-    FROM DISCOUNT_TYPE
-    WHERE DISCOUNT_TYPE_ID = v_discount_id;
+    ELSIF v_user_type = 'senior' AND p_num_passengers = 1 THEN
+      SELECT DISCOUNT_TYPE_ID, DISCOUNT_PERCENTAGE, DISCOUNT_NAME
+      INTO v_discount_id, v_discount_percentage, v_discount_name
+      FROM DISCOUNT_TYPE
+      WHERE LOWER(DISCOUNT_NAME) = 'senior citizen discount';
+
+    ELSIF p_num_passengers BETWEEN 2 AND 4 THEN
+      SELECT DISCOUNT_TYPE_ID, DISCOUNT_PERCENTAGE, DISCOUNT_NAME
+      INTO v_discount_id, v_discount_percentage, v_discount_name
+      FROM DISCOUNT_TYPE WHERE DISCOUNT_TYPE_ID = 4;
+
+    ELSIF p_num_passengers BETWEEN 5 AND 8 THEN
+      SELECT DISCOUNT_TYPE_ID, DISCOUNT_PERCENTAGE, DISCOUNT_NAME
+      INTO v_discount_id, v_discount_percentage, v_discount_name
+      FROM DISCOUNT_TYPE WHERE DISCOUNT_TYPE_ID = 5;
+
+    ELSE
+      SELECT DISCOUNT_TYPE_ID, DISCOUNT_PERCENTAGE, DISCOUNT_NAME
+      INTO v_discount_id, v_discount_percentage, v_discount_name
+      FROM DISCOUNT_TYPE WHERE DISCOUNT_TYPE_ID = 2;
+    END IF;
 
     SELECT AMOUNT INTO v_transit_amount
     FROM TRANSIT_LINE
@@ -106,7 +106,7 @@ CREATE OR REPLACE PACKAGE BODY TICKET_BOOKING_PKG AS
     v_final_amount := v_total_amount * (1 - v_discount_percentage / 100);
 
     IF (v_monthly_total + v_final_amount) > 1000 THEN
-      DBMS_OUTPUT.PUT_LINE('❌ Booking denied. This booking would exceed the $100 monthly limit.');
+      DBMS_OUTPUT.PUT_LINE('❌ Booking denied. This booking would exceed the $1000 monthly limit.');
       RETURN;
     END IF;
 
@@ -149,14 +149,15 @@ CREATE OR REPLACE PACKAGE BODY TICKET_BOOKING_PKG AS
     END LOOP;
 
     COMMIT;
-    DBMS_OUTPUT.PUT_LINE('✅ ' || v_discount_name || ' applied. ' || p_num_passengers || ' Ticket(s) booked successfully.');
+    DBMS_OUTPUT.PUT_LINE('✅ ' || v_discount_name || ' applied. ' || p_num_passengers || ' ticket(s) booked successfully.');
 
   EXCEPTION
     WHEN NO_DATA_FOUND THEN
-      DBMS_OUTPUT.PUT_LINE('❌ Invalid user ID or transit line ID.');
+      DBMS_OUTPUT.PUT_LINE('❌ Invalid user ID or transit line ID or discount type.');
     WHEN OTHERS THEN
       DBMS_OUTPUT.PUT_LINE('❌ An unexpected error occurred: ' || SQLERRM);
   END;
+
 
   PROCEDURE cancel_ticket(p_ticket_id IN NUMBER) IS
     v_purchase_time  TIMESTAMP;
@@ -210,37 +211,3 @@ CREATE OR REPLACE PACKAGE BODY TICKET_BOOKING_PKG AS
 
 END TICKET_BOOKING_PKG;
 /
-
-GRANT EXECUTE ON APP_TRANSIT_ADMIN.TICKET_BOOKING_PKG TO app_booking_mgr;
-GRANT EXECUTE ON APP_TRANSIT_ADMIN.TICKET_BOOKING_PKG TO app_txn_manager;
-
-
-Set serveroutput on;
-
--- Valid Bookings
-BEGIN TICKET_BOOKING_PKG.book_ticket(1, 1, SYSDATE, 1); END;
-BEGIN TICKET_BOOKING_PKG.book_ticket(4, 2, SYSDATE, 2); END;
-BEGIN TICKET_BOOKING_PKG.book_ticket(4, 3, SYSDATE, 5); END;
-
-BEGIN TICKET_BOOKING_PKG.book_ticket(3, 1, SYSDATE, 1); END;
-BEGIN TICKET_BOOKING_PKG.book_ticket(3, 2, SYSDATE, 2); END;
-
-BEGIN TICKET_BOOKING_PKG.book_ticket(4, 3, SYSDATE, 1); END;
-BEGIN TICKET_BOOKING_PKG.book_ticket(5, 4, SYSDATE, 6); END;
-
-BEGIN TICKET_BOOKING_PKG.book_ticket(2, 1, SYSDATE, 1); END;
-
--- Edge Cases
-BEGIN TICKET_BOOKING_PKG.book_ticket(1, 1, TO_DATE('2023-01-01', 'YYYY-MM-DD'), 1); END;
-BEGIN TICKET_BOOKING_PKG.book_ticket(1, 1, SYSDATE, 9); END;
-BEGIN TICKET_BOOKING_PKG.book_ticket(1, 2, SYSDATE, 4); END;
-
--- Cancellation
--- (Run a query to find recent ticket IDs and plug them in)
--- Example:
-BEGIN TICKET_BOOKING_PKG.cancel_ticket(1135); END;
-BEGIN TICKET_BOOKING_PKG.cancel_ticket(1133); END;
-BEGIN TICKET_BOOKING_PKG.cancel_ticket(1115); END;
-
-
-
