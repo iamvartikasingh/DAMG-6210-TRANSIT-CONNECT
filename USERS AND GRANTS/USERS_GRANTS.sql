@@ -1,11 +1,29 @@
--- ===========================================================
--- SYSTEM GRANTS (CONNECT) - Already done, kept for completeness
--- ===========================================================
+-- Drop users safely (optional for rerun safety)
+BEGIN EXECUTE IMMEDIATE 'DROP USER app_transit_admin CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP USER app_customer_user CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP USER app_txn_manager CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP USER app_booking_mgr CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP USER app_subs_mgr CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+
+-- Create Users
+CREATE USER app_transit_admin IDENTIFIED BY "AppAdmin#Pass1234";
+CREATE USER app_customer_user IDENTIFIED BY "Cust#Pass1234";
+CREATE USER app_txn_manager IDENTIFIED BY "Txn#Manager1234";
+CREATE USER app_booking_mgr IDENTIFIED BY "Booking#1234Mgr";
+CREATE USER app_subs_mgr IDENTIFIED BY "Subs#Manager1234";
+
+-- Grant Connect Role
 GRANT CONNECT TO app_transit_admin;
 GRANT CONNECT TO app_customer_user;
 GRANT CONNECT TO app_txn_manager;
 GRANT CONNECT TO app_booking_mgr;
 GRANT CONNECT TO app_subs_mgr;
+
 
 -- ===========================================================
 -- ✅ Transit Admin - Full Access to all objects
