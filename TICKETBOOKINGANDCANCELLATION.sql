@@ -65,18 +65,18 @@ CREATE OR REPLACE PACKAGE BODY TICKET_BOOKING_PKG AS
       RETURN;
     END IF;
 
-    SELECT LOWER(USER_TYPE) INTO v_user_type
+    SELECT USER_TYPE INTO v_user_type
     FROM USER_TBL
     WHERE USER_ID = p_user_id;
 
-    -- ✅ Discount Logic (dynamic lookup)
-    IF v_user_type = 'student' AND p_num_passengers = 1 THEN
+    -- ✅ Case-insensitive discount logic
+    IF LOWER(v_user_type) = 'student' AND p_num_passengers = 1 THEN
       SELECT DISCOUNT_TYPE_ID, DISCOUNT_PERCENTAGE, DISCOUNT_NAME
       INTO v_discount_id, v_discount_percentage, v_discount_name
       FROM DISCOUNT_TYPE
       WHERE LOWER(DISCOUNT_NAME) = 'student discount';
 
-    ELSIF v_user_type = 'senior' AND p_num_passengers = 1 THEN
+    ELSIF LOWER(v_user_type) = 'senior' AND p_num_passengers = 1 THEN
       SELECT DISCOUNT_TYPE_ID, DISCOUNT_PERCENTAGE, DISCOUNT_NAME
       INTO v_discount_id, v_discount_percentage, v_discount_name
       FROM DISCOUNT_TYPE
